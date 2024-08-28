@@ -1,0 +1,32 @@
+{
+  "id": "140907",
+  "name": "NR05gNodeBRadio000012",
+  "category": "Public",
+  "readOnly": false,
+  "update": true,
+  "delete": true,
+  "sortable": true,
+  "timeCreated": 1663344809699,
+  "lastUpdated": 1663345270981,
+  "userId": "nrcran",
+  "objects": [
+    {
+      "id": "121556",
+      "type": "GNBCUCPFunction",
+      "fdn": "MeContext=5G131vCUCPRI001,ManagedElement=1,GNBCUCPFunction=1",
+      "namespace": "urn:3gpp:sa5:_3gpp-nr-nrm-gnbcucpfunction",
+      "name": "1",
+      "attributes": {}
+    },
+    {
+      "id": "148291",
+      "type": "ManagedElement",
+      "fdn": "ManagedElement=NR05gNodeBRadio00001",
+      "namespace": "ComTop",
+      "name": "NR05gNodeBRadio00001",
+      "attributes": {
+        "neType": "RadioNode"
+      }
+    }
+  ]
+}

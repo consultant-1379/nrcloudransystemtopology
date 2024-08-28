@@ -1,0 +1,27 @@
+{
+  "id" : "ad95e6fa-a217-32fa-8d7e-f5747bbd85ed",
+  "request" : {
+    "url" : "/object-configuration/collections/v4",
+    "method" : "POST",
+    "bodyPatterns" : [ {
+      "equalToJson" : "{\"sharing\": \"public\", \"name\": \"5G139vDURI001 - 100\", \"isCustomTopology\": \"false\", \"parentIds\": [\"140877\"], \"type\": \"leaf\", \"contents\": [\"121556\", \"141017\"]}",
+      "ignoreArrayOrder" : true,
+      "ignoreExtraElements" : true
+    } ]
+  },
+  "response" : {
+    "status" : 201,
+    "bodyFileName" : "body-post-create-vdu001-collection.json",
+    "headers" : {
+      "Date" : "Mon, 15 Apr 2019 14:52:03 GMT",
+      "Content-Security-Policy" : "frame-ancestors 'self' https://*/alex*;",
+      "X-Frame-Options" : "allow-from https://*/alex*",
+      "Content-Type" : "application/json",
+      "X-XSS-Protection" : "1; mode=block",
+      "Cache-Control" : "no-cache",
+      "Vary" : "Accept-Encoding",
+      "Transfer-Encoding" : "chunked"
+    }
+  },
+  "uuid" : "ad95e6fa-a217-32fa-8d7e-f5747bbd85ed"
+}

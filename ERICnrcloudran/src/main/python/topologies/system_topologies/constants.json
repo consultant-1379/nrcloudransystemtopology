@@ -1,0 +1,9 @@
+{
+  "name": "NR-CRAN",
+  "queries": {
+    "get_GNBCUCPFunctions": "get all objects of type GNBCUCPFunction from node type Shared-CNF&orderby=moName&orderdirection=asc",
+    "get_GNBDUFunctions": "get all objects of type GNBDUFunction from node type Shared-CNF,RadioNode&orderby=moName&orderdirection=asc",
+    "get_c2_shared-cnf": "select SectorEquipmentFunction from node type Shared-CNF&orderby=moName&orderdirection=asc",
+    "get_c2_radionode": "select ManagedElement from node type RadioNode&orderby=moName&orderdirection=asc"
+  }
+}

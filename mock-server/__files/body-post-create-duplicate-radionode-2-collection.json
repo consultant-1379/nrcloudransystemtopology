@@ -1,0 +1,17 @@
+{
+  "id": "140909",
+  "name": "NR05gNodeBRadio00001 - 100 - 5G131vCUCPRI002 - 127002",
+  "owner": "administrator",
+  "sharing": "public",
+  "type": "LEAF",
+  "timeCreated": 1666881007220,
+  "timeUpdated": 1666881007220,
+  "userPermissions": {
+    "deletable": true,
+    "updateable": true
+  },
+  "parentIds": [
+    "140877"
+  ],
+  "contentsUpdatedTime": 1666881007256
+}

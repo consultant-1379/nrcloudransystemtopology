@@ -1,0 +1,28 @@
+# IntelliJ
+*.iml
+.idea
+
+# Maven build files
+target
+build/
+
+*.pyc
+
+# Test files
+test/coverage
+test/.coverage
+test/nosetests.xml
+test/coverage.xml
+test/somename.py
+test/test_export.zip
+
+venv/
+*.project
+.vscode/
+
+#env
+*.env
+*.env*
+
+#pylint
+*.pylint.d/

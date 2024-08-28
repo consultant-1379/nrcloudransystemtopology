@@ -1,0 +1,52 @@
+{
+  "objects": [
+    {
+      "id": "144325",
+      "type": "GNBDUFunction",
+      "targetTypeAttribute": null
+    },
+    {
+      "id": "141017",
+      "type": "GNBDUFunction",
+      "targetTypeAttribute": null
+    },
+    {
+      "id": "141016",
+      "type": "GNBDUFunction",
+      "targetTypeAttribute": null
+    },
+    {
+      "id": "148742",
+      "type": "GNBDUFunction",
+      "targetTypeAttribute": null
+    },
+    {
+      "id": "166135",
+      "type": "GNBDUFunction",
+      "targetTypeAttribute": null
+    },
+    {
+      "id": "164244",
+      "type": "GNBDUFunction",
+      "targetTypeAttribute": null
+    },
+    {
+      "id": "148743",
+      "type": "GNBDUFunction",
+      "targetTypeAttribute": null
+    }
+  ],
+  "attributes": [],
+  "attributeMappings": [
+    {
+      "moType": "GNBDUFunction",
+      "attributeNames": []
+    }
+  ],
+  "metadata": {
+    "MAX_UI_CACHE_SIZE": 100000,
+    "RESULT_SET_TOTAL_SIZE": 7,
+    "INFO_MESSAGE": 0,
+    "SORTABLE": true
+  }
+}

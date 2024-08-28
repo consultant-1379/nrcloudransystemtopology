@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>com.ericsson.nms</groupId>
+        <artifactId>integration</artifactId>
+        <version>15.2.0.40</version>
+    </parent>
+
+    <groupId>com.ericsson.oss.services</groupId>
+    <artifactId>nrcloudransystemtopology</artifactId>
+    <version>1.5.2-SNAPSHOT</version>
+
+    <name>[${project.artifactId}] Python Project</name>
+
+    <packaging>pom</packaging>
+
+    <url>http://www.ericsson.com</url>
+    <organization>
+        <name>Ericsson</name>
+    </organization>
+
+    <properties>
+        <ericsson.scm.url>
+            scm:git:[fetch=]ssh://gerrit-gamma-read.seli.gic.ericsson.se:29418/OSS/ENM-Parent/SQ-Gate/com.ericsson.oss.services/nrcloudransystemtopology[push=]ssh://gerrit-gamma.gic.ericsson.se:29418/OSS/ENM-Parent/SQ-Gate/com.ericsson.oss.services/nrcloudransystemtopology
+        </ericsson.scm.url>
+        <common-name>ERICnrcloudran</common-name>
+    </properties>
+
+    <profiles>
+        <!-- Site Profiles -->
+        <profile>
+            <id>site_latest</id>
+            <distributionManagement>
+                <site>
+                    <id>site</id>
+                    <name>Site</name>
+                    <url>${site.url}/nrcloudransystemstopology/latest</url>
+                </site>
+            </distributionManagement>
+        </profile>
+        <profile>
+            <id>site_review</id>
+            <distributionManagement>
+                <site>
+                    <id>site</id>
+                    <name>Site</name>
+                    <url>${site.url}</url>
+                </site>
+            </distributionManagement>
+        </profile>
+
+        <!-- Build Profiles -->
+
+        <!-- Generates .env file -->
+        <profile>
+            <id>container_prebuild</id>
+            <activation>
+                <activeByDefault>false</activeByDefault>
+            </activation>
+            <build>
+                <plugins>
+                    <plugin>
+                        <artifactId>exec-maven-plugin</artifactId>
+                        <groupId>org.codehaus.mojo</groupId>
+                        <executions>
+                            <execution>
+                                <id>Prepare containers for the build</id>
+                                <phase>generate-resources</phase>
+                                <goals>
+                                    <goal>exec</goal>
+                                </goals>
+                                <configuration>
+                                    <executable>./prepare_build.sh</executable>
+                                </configuration>
+                            </execution>
+                        </executions>
+                        <inherited>false</inherited>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+
+        <!-- Runs rhel7 profile on rpm module -->
+        <profile>
+            <id>rhel7</id>
+            <activation>
+                <activeByDefault>false</activeByDefault>
+            </activation>
+            <modules>
+                <module>ERICnrcloudransystemtopology_CXP9042799</module>
+            </modules>
+        </profile>
+
+    </profiles>
+
+    <distributionManagement>
+        <site>
+            <id>site</id>
+            <name>Site</name>
+            <url>${site.url}/nrcloudransystemtopology/${project.version}</url>
+        </site>
+    </distributionManagement>
+
+    <scm>
+        <developerConnection>${ericsson.scm.url}</developerConnection>
+        <connection>${ericsson.scm.url}</connection>
+        <tag>HEAD</tag>
+    </scm>
+
+    <modules>
+        <module>ERICnrcloudransystemtopology_CXP9042799</module>
+    </modules>
+
+</project>

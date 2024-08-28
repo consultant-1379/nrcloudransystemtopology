@@ -1,0 +1,38 @@
+{
+  "objects": [
+    {
+      "id": "14829108",
+      "type": "SectorEquipmentFunction",
+      "targetTypeAttribute": null
+    },
+    {
+      "id": "14829209",
+      "type": "SectorEquipmentFunction",
+      "targetTypeAttribute": null
+    },
+    {
+      "id": "16393610",
+      "type": "SectorEquipmentFunction",
+      "targetTypeAttribute": null
+    }
+  ],
+  "attributes": [
+    "neType",
+    "networkFunctions"
+  ],
+  "attributeMappings": [
+    {
+      "moType": "ManagedElement",
+      "attributeNames": [
+        "neType",
+        "networkFunctions"
+      ]
+    }
+  ],
+  "metadata": {
+    "MAX_UI_CACHE_SIZE": 100000,
+    "RESULT_SET_TOTAL_SIZE": 4,
+    "INFO_MESSAGE": 0,
+    "SORTABLE": true
+  }
+}

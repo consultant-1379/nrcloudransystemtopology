@@ -1,0 +1,536 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <artifactId>nrcloudransystemtopology</artifactId>
+        <groupId>com.ericsson.oss.services</groupId>
+        <version>1.5.2-SNAPSHOT</version>
+    </parent>
+
+    <artifactId>ERICnrcloudransystemtopology_CXP9042799</artifactId>
+    <packaging>${rpm.packaging}</packaging>
+    <name>[${project.parent.artifactId}] RPM module</name>
+
+    <properties>
+        <publish_artifact>true</publish_artifact>
+        <media.category>scripting</media.category>
+        <com.ericsson.oss.rpm.architecture>noarch</com.ericsson.oss.rpm.architecture>
+
+        <version.archetype>1.0.56</version.archetype>
+
+        <exec.plugin.version>3.1.0</exec.plugin.version>
+
+        <rpm-root>/opt</rpm-root>
+        <comp-name>ericsson</comp-name>
+
+        <install-path>com.ericsson.oss.services.nrcloudransystemtopology</install-path>
+        <scripting_group>scripting_users</scripting_group>
+        <scripting_gid>5003</scripting_gid>
+
+        <nfs_nrcran>/ericsson/tor/no_rollback/nrcloudransystemtopology</nfs_nrcran>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>com.ericsson.oss.presentation.client.scripting</groupId>
+            <artifactId>ERICclientscripting_CXP9031854</artifactId>
+            <version>1.22.2</version>
+            <type>rpm</type>
+        </dependency>
+    </dependencies>
+
+    <profiles>
+        <!-- container build - builds and starts the rhel7 container -->
+        <profile>
+            <id>container_build</id>
+            <activation>
+                <activeByDefault>false</activeByDefault>
+            </activation>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.codehaus.mojo</groupId>
+                        <artifactId>exec-maven-plugin</artifactId>
+                        <version>${exec.plugin.version}</version>
+                        <executions>
+                            <execution>
+                                <id>Execute build in container</id>
+                                <phase>compile</phase>
+                                <goals>
+                                    <goal>exec</goal>
+                                </goals>
+                                <configuration>
+                                    <executable>../build_in_container.sh</executable>
+                                    <arguments>
+                                        <argument>rhel7</argument>
+                                    </arguments>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+
+        <!-- local build - does the heavy lifting and called during container build -->
+        <profile>
+            <id>local_build</id>
+            <activation>
+                <activeByDefault>false</activeByDefault>
+            </activation>
+            <build>
+                <plugins>
+
+                    <!-- maven-deploy-plugin -->
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-deploy-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>ERICnrcloudransystemtopology_CXP9042799</id>
+                                <phase>deploy</phase>
+                                <configuration>
+                                    <type>${project.packaging}</type>
+                                    <generatePom>true</generatePom>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+
+                    <!-- maven-resources-plugin -->
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-resources-plugin</artifactId>
+                        <executions>
+                            <!-- Copy and filter preinstall.sh script in order to pass scripting_group and scripting_id from maven -->
+                            <execution>
+                                <id>copy-scripts</id>
+                                <phase>validate</phase>
+                                <goals>
+                                    <goal>copy-resources</goal>
+                                </goals>
+                                <configuration>
+                                    <outputDirectory>${project.build.directory}/scripts</outputDirectory>
+                                    <resources>
+                                        <resource>
+                                            <directory>src/main/scripts</directory>
+                                            <filtering>true</filtering>
+                                            <includes>
+                                                <include>preinstall.sh</include>
+                                                <include>configure_nfs_mounts_nrcloudransystemtopology.sh</include>
+                                            </includes>
+                                        </resource>
+                                    </resources>
+                                </configuration>
+                            </execution>
+                            <!-- Copy etc -->
+                            <execution>
+                                <id>copy-resources</id>
+                                <phase>validate</phase>
+                                <goals>
+                                    <goal>copy-resources</goal>
+                                </goals>
+                                <configuration>
+                                    <outputDirectory>${project.build.directory}/etc</outputDirectory>
+                                    <resources>
+                                        <resource>
+                                            <directory>src/main/resources/etc</directory>
+                                            <filtering>true</filtering>
+                                            <includes>
+                                                <include>nr-cloudran_security.conf</include>
+                                            </includes>
+                                        </resource>
+                                    </resources>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+
+                    <!-- maven-dependency-plugin 3.1.1 -->
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-dependency-plugin</artifactId>
+                        <version>3.1.1</version>
+                        <executions>
+                            <execution>
+                                <id>copy</id>
+                                <phase>package</phase>
+                                <goals>
+                                    <goal>copy</goal>
+                                </goals>
+                                <configuration>
+                                    <artifactItems>
+                                        <artifactItem>
+                                            <groupId>${project.groupId}</groupId>
+                                            <artifactId>${project.artifactId}</artifactId>
+                                            <version>${project.version}</version>
+                                            <type>rpm</type>
+                                            <overWrite>true</overWrite>
+                                            <outputDirectory>../build/rpms</outputDirectory>
+                                            <destFileName>${project.artifactId}.rpm</destFileName>
+                                        </artifactItem>
+                                    </artifactItems>
+                                    <outputDirectory>${project.build.directory}/target</outputDirectory>
+                                    <overWriteReleases>false</overWriteReleases>
+                                    <overWriteSnapshots>true</overWriteSnapshots>
+                                </configuration>
+                            </execution>
+                            <execution>
+                                <id>copy-dependencies</id>
+                                <phase>package</phase>
+                                <goals>
+                                    <goal>copy-dependencies</goal>
+                                </goals>
+                                <configuration>
+                                    <artifactItems>
+                                        <artifactItem>
+                                            <groupId>com.ericsson.oss.presentation.client.scripting</groupId>
+                                            <artifactId>ERICclientscripting_CXP9031854</artifactId>
+                                            <version>1.22.1</version>
+                                            <type>rpm</type>
+                                            <outputDirectory>${project.build.directory}/deps</outputDirectory>
+                                        </artifactItem>
+                                    </artifactItems>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+
+                    <!-- exec-maven-plugin -->
+                    <plugin>
+                        <groupId>org.codehaus.mojo</groupId>
+                        <artifactId>exec-maven-plugin</artifactId>
+                        <version>${exec.plugin.version}</version>
+                        <executions>
+                            <!-- Symbolic links - links ERICnrcloudran dir -->
+                            <execution>
+                                <id>Generate symbolic to ${common-name}</id>
+                                <phase>clean</phase>
+                                <goals>
+                                    <goal>exec</goal>
+                                </goals>
+                                <configuration>
+                                    <executable>../prepare_symbolic_links.sh</executable>
+                                    <arguments>
+                                        <argument>rhel7</argument>
+                                        <argument>${basedir}</argument>
+                                    </arguments>
+                                </configuration>
+                            </execution>
+                            <!--<execution>
+                                <id>Remove symbolic link for ${common-name}</id>
+                                <phase>install</phase>
+                                <goals>
+                                    <goal>exec</goal>
+                                </goals>
+                                <configuration>
+                                    <executable>/bin/rm</executable>
+                                    <arguments>
+                                        <argument>-rf</argument>
+                                        <argument>${basedir}/src</argument>
+                                    </arguments>
+                                </configuration>
+                            </execution> -->
+
+                            <!-- Unpack dependencies -->
+                            <execution>
+                                <id>unpack-scripting-rpm</id>
+                                <phase>compile</phase>
+                                <goals>
+                                    <goal>exec</goal>
+                                </goals>
+                                <!--  unpack dependencies in target  -->
+                                <configuration>
+                                    <executable>sh</executable>
+                                    <workingDirectory>.</workingDirectory>
+                                    <arguments>
+                                        <argument>../expand_deps_rpms.sh</argument>
+                                    </arguments>
+                                </configuration>
+                            </execution>
+                            <execution>
+                                <id>unpack-scripting-wheel</id>
+                                <phase>compile</phase>
+                                <goals>
+                                    <goal>exec</goal>
+                                </goals>
+                                <!--  unzip enm-scripting rpm  -->
+                                <configuration>
+                                    <executable>unzip</executable>
+                                    <workingDirectory>..</workingDirectory>
+                                    <arguments>
+                                        <argument>-o</argument>
+                                        <argument>-q</argument>
+                                        <argument>-d</argument>
+                                        <argument>${project.build.directory}/deps</argument>
+                                        <argument>${project.build.directory}/deps/opt/ericsson/ERICclientscripting_CXP9031854/enm_client_scripting-*.whl</argument>
+                                    </arguments>
+                                </configuration>
+                            </execution>
+
+                            <!-- Pylint -->
+                            <execution>
+                                <id>pylint</id>
+                                <phase>test</phase>
+                                <goals>
+                                    <goal>exec</goal>
+                                </goals>
+                                <configuration>
+                                    <executable>pylint</executable>
+                                    <environmentVariables>
+                                        <PYTHONPATH>
+                                            src/main/python:${project.build.directory}/deps:${env.PYTHONPATH}
+                                        </PYTHONPATH>
+                                    </environmentVariables>
+                                    <workingDirectory>.</workingDirectory>
+                                    <arguments>
+                                        <argument>
+                                            --msg-template='{path}:{line}: [{msg_id}({symbol}), {obj}] {msg}'
+                                        </argument>
+                                        <argument>-rn</argument>
+                                        <argument>
+                                            -dR0903,C0111,E1103,R0801,R0921,R0922,W0403,E0602,I0011,W0611,W0611,C0103
+                                        </argument>
+                                        <argument>src/main/python</argument>
+                                    </arguments>
+                                </configuration>
+                            </execution>
+                            <!-- Pep8 -->
+                            <execution>
+                                <id>pep8</id>
+                                <phase>compile</phase>
+                                <goals>
+                                    <goal>exec</goal>
+                                </goals>
+                                <configuration>
+                                    <executable>pep8</executable>
+                                    <workingDirectory>.</workingDirectory>
+                                    <arguments>
+                                        <argument>src/main/python</argument>
+                                    </arguments>
+                                </configuration>
+                            </execution>
+
+                            <!-- Behave tests -->
+                            <execution>
+                                <id>BehaveIntegrationTest</id>
+                                <phase>compile</phase>
+                                <goals>
+                                    <goal>exec</goal>
+                                </goals>
+                                <configuration>
+                                    <executable>behave</executable>
+                                    <workingDirectory>${project.parent.basedir}/test</workingDirectory>
+                                </configuration>
+                            </execution>
+                            <!-- Nose tests -->
+                            <execution>
+                                <id>nosetests</id>
+                                <phase>compile</phase>
+                                <goals>
+                                    <goal>exec</goal>
+                                </goals>
+                                <configuration>
+                                    <skip>true</skip>
+                                    <executable>nosetests</executable>
+                                    <environmentVariables>
+                                        <PYTHONPATH>
+                                            ${project.parent.basedir}/src:${project.parent.basedir}/common:${project.parent.basedir}/topologies:${env.PYTHONPATH}:${project.build.directory}/deps
+                                        </PYTHONPATH>
+                                    </environmentVariables>
+                                    <workingDirectory>${project.parent.basedir}/test</workingDirectory>
+                                    <arguments>
+                                        <argument>--failure-detail</argument>
+                                        <argument>--with-xunit</argument>
+                                        <argument>-s</argument>
+                                        <argument>--exe</argument>
+                                        <argument>--verbose</argument>
+                                        <argument>--with-coverage</argument>
+                                        <argument>--cover-package=${project.parent.basedir}/src</argument>
+                                        <argument>--cover-inclusive</argument>
+                                        <argument>--cover-xml</argument>
+                                        <argument>--cover-html</argument>
+                                        <argument>--cover-xml-file=coverage.xml</argument>
+                                        <argument>--cover-html-dir=${project.parent.basedir}/test/coverage</argument>
+                                    </arguments>
+                                </configuration>
+                            </execution>
+
+                        </executions>
+                    </plugin>
+
+                    <!-- jacoco-maven-plugin -->
+                    <plugin>
+                        <groupId>org.jacoco</groupId>
+                        <artifactId>jacoco-maven-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <phase>none</phase>
+                            </execution>
+                        </executions>
+                    </plugin>
+
+                    <!-- rpm-maven-plugin -->
+                    <plugin>
+                        <groupId>org.codehaus.mojo</groupId>
+                        <artifactId>rpm-maven-plugin</artifactId>
+                        <extensions>true</extensions>
+                        <goals>
+                            <goal>rpm</goal>
+                        </goals>
+                        <executions>
+                            <execution>
+                                <id>default-rpm</id>
+                                <phase>package</phase>
+                                <configuration>
+                                    <phase>package</phase>
+                                    <skip>true</skip>
+                                    <inherited>true</inherited>
+                                    <copyright>2021 Ericsson AB All rights reserved</copyright>
+                                    <group>ERI-NMS</group>
+                                    <vendor>Ericsson AB</vendor>
+                                    <url>www.ericsson.com</url>
+
+                                    <requires>
+                                        <require>python3</require>
+                                        <require>python3-cryptography</require>
+                                        <require>expect</require>
+                                    </requires>
+                                    <autoRequires>false</autoRequires>
+                                    <!-- avoids rpm based errors regarding unpackaged files -->
+                                    <defineStatements>
+                                        <defineStatement>_unpackaged_files_terminate_build 0</defineStatement>
+                                    </defineStatements>
+
+                                    <provides>
+                                        <provide>nrcloudransystemtopology = 1.0.1</provide>
+                                    </provides>
+
+                                    <mappings>
+                                        <!-- Mapping for etc / nr-cloudran_security.conf -->
+                                        <mapping>
+                                            <directory>/etc</directory>
+                                            <groupname>${scripting_group}</groupname>
+                                            <filemode>0775</filemode>
+                                            <configuration>false</configuration>
+                                            <sources>
+                                                <source>
+                                                    <location>src/main/resources/etc</location>
+                                                </source>
+                                            </sources>
+                                        </mapping>
+
+                                        <!-- Mapping for python source -->
+                                        <mapping>
+                                            <directory>${rpm-root}/${comp-name}/nrcloudransystemtopology</directory>
+                                            <groupname>${scripting_group}</groupname>
+                                            <filemode>0775</filemode>
+                                            <configuration>false</configuration>
+                                            <sources>
+                                                <source>
+                                                    <location>src/main/python</location>
+                                                    <includes>
+                                                        <include>**/*.py</include>
+                                                        <include>**/*.txt</include>
+                                                        <include>**/*.json</include>
+                                                        <include>log/nrcran_log</include>
+                                                    </includes>
+                                                    <excludes>
+                                                        <exclude>**/*.pyc</exclude>
+                                                        <exclude>**/*.pyo</exclude>
+                                                        <exclude>test</exclude>
+                                                    </excludes>
+                                                </source>
+                                            </sources>
+                                            <dependency>
+                                                <excludes>
+                                                    <exclude>com.ericsson.oss.presentation.client.scripting:ERICclientscripting_CXP9031854</exclude>
+                                                </excludes>
+                                            </dependency>
+                                        </mapping>
+
+                                        <!-- Mapping for setup.py -->
+                                        <mapping>
+                                            <directory>${rpm-root}/${comp-name}/nrcloudransystemtopology/bin</directory>
+                                            <groupname>${scripting_group}</groupname>
+                                            <filemode>0754</filemode>
+                                            <configuration>false</configuration>
+                                            <sources>
+                                                <source>
+                                                    <location>src/main/python/bin</location>
+                                                    <includes>
+                                                        <include>**/*</include>
+                                                    </includes>
+                                                    <excludes>
+                                                        <exclude>**/*.pyc</exclude>
+                                                    </excludes>
+                                                </source>
+                                            </sources>
+                                        </mapping>
+
+                                        <!-- Mapping for cron.sh -->
+                                        <mapping>
+                                            <directory>${rpm-root}/${comp-name}/nrcloudransystemtopology/crontabs</directory>
+                                            <groupname>${scripting_group}</groupname>
+                                            <filemode>0754</filemode>
+                                            <configuration>false</configuration>
+                                            <sources>
+                                                <source>
+                                                    <location>src/main/resources/crontabs</location>
+                                                    <includes>
+                                                        <include>cron.sh</include>
+                                                    </includes>
+                                                </source>
+                                            </sources>
+                                        </mapping>
+
+                                        <!-- Mapping for cronfile -->
+                                        <mapping>
+                                            <directory>${rpm-root}/${comp-name}/nrcloudransystemtopology/crontabs</directory>
+                                            <groupname>${scripting_group}</groupname>
+                                            <configuration>false</configuration>
+                                            <sources>
+                                                <source>
+                                                    <location>src/main/resources/crontabs</location>
+                                                    <includes>
+                                                        <include>cronfile</include>
+                                                        <include>script_functions.sh</include>
+                                                    </includes>
+                                                </source>
+                                            </sources>
+                                        </mapping>
+
+                                        <!-- jboss pre-start script -->
+                                        <mapping>
+                                            <directory>${vm.jboss-install-path}/bin/pre-start</directory>
+                                            <filemode>754</filemode>
+                                            <username>${jboss-username}</username>
+                                            <groupname>${jboss-groupname}</groupname>
+                                            <configuration>false</configuration>
+                                            <directoryIncluded>false</directoryIncluded>
+                                            <recurseDirectories>false</recurseDirectories>
+                                            <sources>
+                                                <source>
+                                                    <location>src/main/scripts</location>
+                                                    <includes>
+                                                        <include>configure_nfs_mounts_nrcloudransystemtopology.sh</include>
+                                                    </includes>
+                                                </source>
+                                            </sources>
+                                        </mapping>
+                                    </mappings>
+
+                                    <preinstallScriptlet>
+                                        <scriptFile>src/main/scripts/preinstall.sh</scriptFile>
+                                        <fileEncoding>utf-8</fileEncoding>
+                                    </preinstallScriptlet>
+                                </configuration>
+                            </execution>
+
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
+</project>

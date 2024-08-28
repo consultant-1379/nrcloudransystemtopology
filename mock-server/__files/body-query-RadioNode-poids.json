@@ -1,0 +1,43 @@
+{
+  "objects": [
+    {
+      "id": "148291",
+      "type": "ManagedElement",
+      "targetTypeAttribute": "RadioNode"
+    },
+    {
+      "id": "148292",
+      "type": "ManagedElement",
+      "targetTypeAttribute": "RadioNode"
+    },
+    {
+      "id": "163936",
+      "type": "ManagedElement",
+      "targetTypeAttribute": "RadioNode"
+    },
+    {
+      "id": "164899",
+      "type": "ManagedElement",
+      "targetTypeAttribute": "RadioNode"
+    }
+  ],
+  "attributes": [
+    "neType",
+    "networkFunctions"
+  ],
+  "attributeMappings": [
+    {
+      "moType": "ManagedElement",
+      "attributeNames": [
+        "neType",
+        "networkFunctions"
+      ]
+    }
+  ],
+  "metadata": {
+    "MAX_UI_CACHE_SIZE": 100000,
+    "RESULT_SET_TOTAL_SIZE": 4,
+    "INFO_MESSAGE": 0,
+    "SORTABLE": true
+  }
+}

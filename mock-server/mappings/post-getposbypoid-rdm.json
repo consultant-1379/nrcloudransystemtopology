@@ -1,0 +1,27 @@
+{
+  "id" : "ad95e6fa-a217-32fa-8d7e-f5747bbd85ed",
+  "request" : {
+    "url" : "/managedObjects/getPosByPoIds",
+    "method" : "POST",
+    "bodyPatterns" : [ {
+      "equalToJson" : "{\r\n    \"poList\": [\"14829108\", \"14829209\", \"16393610\"]\r\n}",
+      "ignoreArrayOrder" : true,
+      "ignoreExtraElements" : true
+    } ]
+  },
+  "response" : {
+    "status" : 200,
+    "bodyFileName" : "body-post-getposbypoid-rdm.json",
+    "headers" : {
+      "Date" : "Mon, 15 Apr 2019 14:52:03 GMT",
+      "Content-Security-Policy" : "frame-ancestors 'self' https://*/alex*;",
+      "X-Frame-Options" : "allow-from https://*/alex*",
+      "Content-Type" : "application/json",
+      "X-XSS-Protection" : "1; mode=block",
+      "Cache-Control" : "no-cache",
+      "Vary" : "Accept-Encoding",
+      "Transfer-Encoding" : "chunked"
+    }
+  },
+  "uuid" : "ad95e6fa-a217-32fa-8d7e-f5747bbd85ed"
+}

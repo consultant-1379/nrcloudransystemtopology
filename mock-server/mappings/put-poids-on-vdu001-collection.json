@@ -1,0 +1,22 @@
+{
+  "id" : "ad95e6fa-a217-32fa-8d7e-f5747bbd85ed",
+  "request" : {
+    "url" : "/object-configuration/v1/collections/140909",
+    "method" : "PUT"
+  },
+  "response" : {
+    "status" : 200,
+    "bodyFileName" : "body-put-poids-on-vdu001-collection.json",
+    "headers" : {
+      "Date" : "Mon, 15 Apr 2019 14:52:03 GMT",
+      "Content-Security-Policy" : "frame-ancestors 'self' https://*/alex*;",
+      "X-Frame-Options" : "allow-from https://*/alex*",
+      "Content-Type" : "application/json",
+      "X-XSS-Protection" : "1; mode=block",
+      "Cache-Control" : "no-cache",
+      "Vary" : "Accept-Encoding",
+      "Transfer-Encoding" : "chunked"
+    }
+  },
+  "uuid" : "ad95e6fa-a217-32fa-8d7e-f5747bbd85ed"
+}

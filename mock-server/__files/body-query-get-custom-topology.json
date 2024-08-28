@@ -1,0 +1,10 @@
+[
+    {
+        "id": "281474979365379",
+        "name": "NR-CLOUD-RAN",
+        "parentId": null,
+        "type": "BRANCH",
+        "level": 0,
+        "customTopology": true
+    }
+]

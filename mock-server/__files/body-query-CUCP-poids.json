@@ -1,0 +1,27 @@
+{
+  "objects": [
+    {
+      "id": "121556",
+      "type": "GNBCUCPFunction",
+      "targetTypeAttribute": null
+    },
+    {
+      "id": "1215561",
+      "type": "GNBCUCPFunction",
+      "targetTypeAttribute": null
+    }
+  ],
+  "attributes": [],
+  "attributeMappings": [
+    {
+      "moType": "GNBCUCPFunction",
+      "attributeNames": []
+    }
+  ],
+  "metadata": {
+    "MAX_UI_CACHE_SIZE": 100000,
+    "RESULT_SET_TOTAL_SIZE": 1,
+    "INFO_MESSAGE": 0,
+    "SORTABLE": true
+  }
+}
